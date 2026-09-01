@@ -1,0 +1,424 @@
+/* =========================================================
+   Septiembre Sin Fap — identidad visual
+   Paleta: noche urbana + ámbar de "racha encendida"
+   Tipografía: Oswald (display, condensada, deportiva) + Manrope (texto)
+   ========================================================= */
+
+:root {
+    --bg:            #14151f;
+    --surface:       #1d1e2c;
+    --surface-2:     #262838;
+    --border:        #33354a;
+    --text:          #eceaf5;
+    --text-muted:    #9390a8;
+    --ember:         #ff7a3d;
+    --ember-soft:    rgba(255, 122, 61, 0.16);
+    --teal:          #2dd4bf;
+    --danger:        #ef4a5f;
+    --success:       #34c778;
+    --radius-lg:     20px;
+    --radius-md:     14px;
+    --radius-sm:     10px;
+}
+
+* { box-sizing: border-box; }
+
+body {
+    background: radial-gradient(120% 120% at 10% 0%, #1a1c2b 0%, var(--bg) 55%);
+    color: var(--text);
+    font-family: 'Manrope', system-ui, sans-serif;
+    min-height: 100vh;
+    padding-bottom: 100px;
+}
+
+.display {
+    font-family: 'Oswald', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+}
+
+/* ---------- Encabezado ---------- */
+.app-header {
+    padding: 20px 18px 8px;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+}
+
+.app-header .brand {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    color: var(--text);
+}
+
+.app-header .brand > span span {
+    color: var(--ember);
+}
+
+.compact-brand {
+    font-size: 1rem;
+}
+
+.brand-logo {
+    display: inline-block;
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+.brand-logo-sm {
+    width: 28px;
+    height: 28px;
+}
+
+.brand-logo-lg {
+    width: 88px;
+    height: 88px;
+}
+
+.login-brand {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 14px;
+}
+
+.app-header .day-pill {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 4px 14px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* ---------- Tarjetas base ---------- */
+.card-app {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 20px;
+}
+
+/* ---------- Hero de racha personal ---------- */
+.hero-racha {
+    background: linear-gradient(155deg, var(--surface) 0%, #23253a 100%);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px 22px;
+    margin: 6px 16px 18px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-racha::after {
+    content: "";
+    position: absolute;
+    right: -40px;
+    top: -40px;
+    width: 160px;
+    height: 160px;
+    background: var(--ember-soft);
+    border-radius: 50%;
+    filter: blur(4px);
+}
+
+.hero-racha .numero-dias {
+    font-family: 'Oswald', sans-serif;
+    font-size: 4rem;
+    line-height: 1;
+    font-weight: 600;
+    color: var(--ember);
+}
+
+.hero-racha .etiqueta-dias {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.badge-rango {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 12px;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+}
+
+/* ---------- Lista de participantes ---------- */
+.lista-participantes {
+    padding: 0 16px;
+}
+
+.participante {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 12px 14px;
+    margin-bottom: 10px;
+    transition: border-color 0.15s ease;
+}
+
+.participante.es-yo {
+    border-color: var(--ember);
+    background: linear-gradient(90deg, var(--ember-soft), var(--surface) 40%);
+}
+
+.participante .avatar-inicial {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--surface-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    color: var(--teal);
+    flex-shrink: 0;
+}
+
+.participante .nombre {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.participante .meta {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+.participante .dias-num {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.3rem;
+    color: var(--ember);
+    margin-left: auto;
+}
+
+.puesto-medalla {
+    font-size: 1.1rem;
+    width: 24px;
+    text-align: center;
+}
+
+/* ---------- Modal de reporte ---------- */
+.modal-reporte .modal-content {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    color: var(--text);
+}
+
+.opcion-reporte {
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 18px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.12s ease, border-color 0.12s ease;
+    background: var(--surface-2);
+}
+
+.opcion-reporte:hover {
+    transform: translateY(-2px);
+}
+
+.opcion-reporte.seleccionada.sobrevivi {
+    border-color: var(--success);
+    background: rgba(52, 199, 120, 0.12);
+}
+
+.opcion-reporte.seleccionada.falle {
+    border-color: var(--danger);
+    background: rgba(239, 74, 95, 0.12);
+}
+
+.opcion-reporte .icono {
+    font-size: 2.2rem;
+    display: block;
+    margin-bottom: 8px;
+}
+
+/* ---------- Botón flotante de reporte ---------- */
+.btn-reportar-flotante {
+    position: fixed;
+    bottom: 20px;
+    left: 16px;
+    right: 16px;
+    background: var(--ember);
+    color: #14151f;
+    border: none;
+    border-radius: var(--radius-md);
+    padding: 15px;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    box-shadow: 0 10px 30px rgba(255, 122, 61, 0.25);
+}
+
+.btn-reportar-flotante:disabled {
+    background: var(--surface-2);
+    color: var(--text-muted);
+    box-shadow: none;
+}
+
+/* ---------- Cuadrícula tipo GitHub ---------- */
+.grid-contribuciones {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 6px;
+}
+
+.grid-contribuciones .celda-dia {
+    aspect-ratio: 1;
+    border-radius: 6px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+}
+
+.celda-dia.sobrevivio { background: var(--success); border-color: var(--success); }
+.celda-dia.falle { background: var(--danger); border-color: var(--danger); }
+.celda-dia.futuro { opacity: 0.35; }
+
+/* ---------- Salón de caídos ---------- */
+.caidos-shell {
+    padding: 0 16px 32px;
+}
+
+.caido-card {
+    background: rgba(29, 30, 44, 0.9);
+    border: 1px dashed rgba(239, 74, 95, 0.45);
+    border-radius: var(--radius-md);
+    padding: 16px 14px;
+    margin-bottom: 12px;
+    opacity: 0.82;
+}
+
+.caido-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.caido-nombre {
+    font-weight: 700;
+    text-decoration: line-through;
+    text-decoration-thickness: 2px;
+    text-decoration-color: rgba(239, 74, 95, 0.8);
+}
+
+.caido-rango {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 10px;
+    border-radius: 999px;
+    background: rgba(239, 74, 95, 0.12);
+    border: 1px solid rgba(239, 74, 95, 0.35);
+    color: #ffbac2;
+    font-size: 0.74rem;
+    white-space: nowrap;
+}
+
+.caido-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+}
+
+.caido-meta strong {
+    color: var(--danger);
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    font-size: 1.05rem;
+    letter-spacing: 0.02em;
+}
+
+/* ---------- Login ---------- */
+.login-wrap {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 380px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 32px 26px;
+}
+
+.login-card .titulo {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.6rem;
+    margin-bottom: 4px;
+}
+
+.login-card .titulo span { color: var(--ember); }
+
+.form-control-app {
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: var(--radius-sm);
+    padding: 11px 14px;
+}
+
+.form-control-app:focus {
+    background: var(--surface-2);
+    color: var(--text);
+    border-color: var(--ember);
+    box-shadow: 0 0 0 3px var(--ember-soft);
+}
+
+.btn-ember {
+    background: var(--ember);
+    color: #14151f;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: 'Oswald', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    font-weight: 600;
+    padding: 12px;
+}
+
+.btn-ember:hover { color: #14151f; opacity: 0.92; }
+
+.mensaje-error {
+    background: rgba(239, 74, 95, 0.12);
+    border: 1px solid rgba(239, 74, 95, 0.4);
+    color: #ff9daa;
+    border-radius: var(--radius-sm);
+    padding: 10px 12px;
+    font-size: 0.85rem;
+}
+
+.text-muted-app { color: var(--text-muted); }
+
+@media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; animation: none !important; }
+}
