@@ -22,12 +22,6 @@ Reportas cada noche, subes de rango, y si fallas... quedas en el Salón de los C
 
 <br>
 
-<img src="docs/screenshots/dashboard.png" width="260" alt="Dashboard">
-<img src="docs/screenshots/reporte.png" width="260" alt="Modal de reporte">
-<img src="docs/screenshots/caidos.png" width="260" alt="Salón de los caídos">
-
-<sub>👆 reemplaza estas capturas — coloca tus imágenes en <code>docs/screenshots/</code> con estos mismos nombres</sub>
-
 </div>
 
 <br>
