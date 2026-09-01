@@ -21,10 +21,7 @@ function getConexion(): PDO
     $sslmode  = env('DB_SSLMODE', 'require');
     $options  = env('DB_OPTIONS');
 
-    if ($options === null && str_contains((string) $host, 'neon.tech')) {
-        $endpoint = explode('.', (string) $host)[0];
-        $options = "endpoint={$endpoint}";
-    }
+    $options = env('DB_OPTIONS');
 
     $dsn = "pgsql:host={$host};port={$port};dbname={$dbname};sslmode={$sslmode}";
     if ($options !== null && $options !== '') {
