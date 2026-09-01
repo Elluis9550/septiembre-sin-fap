@@ -1,0 +1,29 @@
+{
+    "name": "septiembre-sin-fap/app",
+    "description": "Un mes. Una racha. Sin excusas.",
+    "type": "project",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Septiembre Sin Fap",
+            "email": "dev@septiembre-sin-fap.local"
+        }
+    ],
+    "require": {
+        "php": "^8.2"
+    },
+    "require-dev": {},
+    "config": {
+        "allow-plugins": true
+    },
+    "autoload": {
+        "files": [
+            "config/env.php",
+            "config/app.php",
+            "config/database.php",
+            "functions/auth.php",
+            "functions/helpers.php",
+            "functions/rangos.php"
+        ]
+    }
+}
