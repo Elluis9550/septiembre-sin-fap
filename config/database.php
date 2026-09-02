@@ -7,23 +7,6 @@ require_once __DIR__ . '/env.php';
  */
 function getConexion(): PDO
 {
-    static $pdo = null;
-
-    if ($pdo !== null) {
-        try {
-            // En PHP-FPM/worker pool, la misma conexión puede sobrevivir entre requests.
-            // Si una transacción quedó abortada en un request previo, hay que resetearla
-            // antes de reutilizar la conexión para no seguir operando contra un estado inválido.
-            if ($pdo->inTransaction()) {
-                $pdo->rollBack();
-            }
-            $pdo->query('SELECT 1');
-            return $pdo;
-        } catch (Throwable $e) {
-            $pdo = null;
-        }
-    }
-
     $host     = env('DB_HOST');
     $port     = env('DB_PORT', '5432');
     $dbname   = env('DB_NAME');
@@ -42,6 +25,7 @@ function getConexion(): PDO
             PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
             PDO::ATTR_EMULATE_PREPARES   => false,
+            PDO::ATTR_AUTOCOMMIT         => true,
         ]);
     } catch (PDOException $e) {
         error_log('Error de conexión a la base de datos: ' . $e->getMessage());
