@@ -1,3 +1,9 @@
 .env
+.env.*
+.env.example
+
 vendor/
 *.log
+
+scripts/credenciales_usuarios.txt
+scripts/crear_usuarios_reto.php

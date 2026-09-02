@@ -23,7 +23,11 @@ class CaidaRepository
      */
     public function registrarCaida(int $usuarioId, string $fecha): array
     {
-        $this->pdo->beginTransaction();
+        $inicioTransaccion = !$this->pdo->inTransaction();
+        if ($inicioTransaccion) {
+            $this->pdo->beginTransaction();
+        }
+
         try {
             // Bloqueamos la fila del usuario para evitar condiciones de carrera
             $stmt = $this->pdo->prepare(
@@ -57,11 +61,15 @@ class CaidaRepository
                 'rango'      => $rango,
             ]);
 
-            $this->pdo->commit();
+            if ($inicioTransaccion) {
+                $this->pdo->commit();
+            }
 
             return ['dias' => $dias, 'rango' => $rango];
         } catch (Throwable $e) {
-            $this->pdo->rollBack();
+            if ($inicioTransaccion && $this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
             throw $e;
         }
     }
@@ -73,7 +81,11 @@ class CaidaRepository
      */
     public function registrarSupervivencia(int $usuarioId): int
     {
-        $this->pdo->beginTransaction();
+        $inicioTransaccion = !$this->pdo->inTransaction();
+        if ($inicioTransaccion) {
+            $this->pdo->beginTransaction();
+        }
+
         try {
             $stmt = $this->pdo->prepare('SELECT dias FROM usuarios WHERE id = :id FOR UPDATE');
             $stmt->execute(['id' => $usuarioId]);
@@ -88,10 +100,14 @@ class CaidaRepository
             $stmt = $this->pdo->prepare('UPDATE usuarios SET dias = :dias WHERE id = :id');
             $stmt->execute(['dias' => $nuevosDias, 'id' => $usuarioId]);
 
-            $this->pdo->commit();
+            if ($inicioTransaccion) {
+                $this->pdo->commit();
+            }
             return $nuevosDias;
         } catch (Throwable $e) {
-            $this->pdo->rollBack();
+            if ($inicioTransaccion && $this->pdo->inTransaction()) {
+                $this->pdo->rollBack();
+            }
             throw $e;
         }
     }

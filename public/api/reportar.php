@@ -40,34 +40,42 @@ if ($reporteRepo->yaReportoHoy($usuarioId, $fechaHoy)) {
     jsonError('Ya enviaste tu reporte de hoy', 409);
 }
 
+$pdo = getConexion();
+
 try {
+    $pdo->beginTransaction();
+
     // 1. Registrar el reporte (protegido además por UNIQUE(usuario_id, fecha) en BD)
     $reporteRepo->insertar($usuarioId, $fechaHoy, $resultado);
 
-    // 2. Ejecutar la consecuencia correspondiente, siempre de forma transaccional
+    // 2. Ejecutar la consecuencia correspondiente dentro de la misma transacción.
     if ($resultado === 'falle') {
         $info = $caidaRepo->registrarCaida($usuarioId, $fechaHoy);
-        jsonResponse([
-            'ok' => true,
-            'resultado' => 'falle',
-            'dias_alcanzados' => $info['dias'],
-            'rango' => $info['rango'],
-        ]);
     } else {
         $nuevosDias = $caidaRepo->registrarSupervivencia($usuarioId);
-        $rango = obtenerRango($nuevosDias);
-        jsonResponse([
-            'ok' => true,
-            'resultado' => 'sobrevivio',
-            'dias' => $nuevosDias,
-            'rango' => $rango,
-        ]);
+        $info = ['dias' => $nuevosDias, 'rango' => obtenerRango($nuevosDias)];
     }
+
+    $pdo->commit();
+
+    jsonResponse([
+        'ok' => true,
+        'resultado' => $resultado,
+        'dias' => $info['dias'] ?? null,
+        'dias_alcanzados' => $info['dias'] ?? null,
+        'rango' => $info['rango'],
+    ]);
 } catch (PDOException $e) {
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
     // Puede ocurrir por la constraint UNIQUE en caso de doble envío simultáneo
     error_log('Error al registrar reporte: ' . $e->getMessage());
     jsonError('No se pudo registrar el reporte. Intenta de nuevo.', 409);
 } catch (Throwable $e) {
+    if ($pdo->inTransaction()) {
+        $pdo->rollBack();
+    }
     error_log('Error inesperado en reportar.php: ' . $e->getMessage());
     jsonError('Error interno al procesar el reporte', 500);
 }
