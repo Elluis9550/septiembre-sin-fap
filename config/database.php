@@ -10,7 +10,18 @@ function getConexion(): PDO
     static $pdo = null;
 
     if ($pdo !== null) {
-        return $pdo;
+        try {
+            // En PHP-FPM/worker pool, la misma conexión puede sobrevivir entre requests.
+            // Si una transacción quedó abortada en un request previo, hay que resetearla
+            // antes de reutilizar la conexión para no seguir operando contra un estado inválido.
+            if ($pdo->inTransaction()) {
+                $pdo->rollBack();
+            }
+            $pdo->query('SELECT 1');
+            return $pdo;
+        } catch (Throwable $e) {
+            $pdo = null;
+        }
     }
 
     $host     = env('DB_HOST');
@@ -20,8 +31,6 @@ function getConexion(): PDO
     $password = env('DB_PASSWORD');
     $sslmode  = env('DB_SSLMODE', 'require');
     $options  = env('DB_OPTIONS');
-
-    $options = env('DB_OPTIONS');
 
     $dsn = "pgsql:host={$host};port={$port};dbname={$dbname};sslmode={$sslmode}";
     if ($options !== null && $options !== '') {
