@@ -6,9 +6,9 @@ class UsuarioRepository
 {
     private PDO $pdo;
 
-    public function __construct()
+    public function __construct(?PDO $pdo = null)
     {
-        $this->pdo = getConexion();
+        $this->pdo = $pdo ?? getConexion();
     }
 
     public function buscarPorId(int $id): ?array

@@ -26,9 +26,10 @@ if (!in_array($resultado, ['sobrevivio', 'falle'], true)) {
     jsonError('Resultado inválido', 422);
 }
 
-$usuarioRepo = new UsuarioRepository();
-$reporteRepo = new ReporteRepository();
-$caidaRepo   = new CaidaRepository();
+$pdo = getConexion();
+$usuarioRepo = new UsuarioRepository($pdo);
+$reporteRepo = new ReporteRepository($pdo);
+$caidaRepo   = new CaidaRepository($pdo);
 
 if (!$usuarioRepo->estaActivo($usuarioId)) {
     jsonError('El usuario no está activo en el reto', 403);
@@ -39,8 +40,6 @@ $fechaHoy = hoyApp();
 if ($reporteRepo->yaReportoHoy($usuarioId, $fechaHoy)) {
     jsonError('Ya enviaste tu reporte de hoy', 409);
 }
-
-$pdo = getConexion();
 
 try {
     $pdo->beginTransaction();
