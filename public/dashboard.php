@@ -58,8 +58,9 @@ $totalActivos = count($repo->listarActivos());
 <div class="px-3 mb-2 d-flex justify-content-between align-items-center">
     <span class="text-muted-app small">Participantes activos</span>
     <select id="selectorOrden" class="form-select form-select-sm form-control-app" style="width:auto;">
-        <option value="dias">Ordenar por días</option>
         <option value="nombre">Ordenar por nombre</option>
+        <option value="dias">Ordenar por días</option>
+
     </select>
 </div>
 
