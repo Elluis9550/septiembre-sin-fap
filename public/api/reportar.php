@@ -42,19 +42,25 @@ if ($reporteRepo->yaReportoHoy($usuarioId, $fechaHoy)) {
 }
 
 try {
+    $paso = 'iniciar transacción';
+    $pdo->exec('ROLLBACK');
     $pdo->beginTransaction();
 
     // 1. Registrar el reporte (protegido además por UNIQUE(usuario_id, fecha) en BD)
+    $paso = 'insertar reporte';
     $reporteRepo->insertar($usuarioId, $fechaHoy, $resultado);
 
     // 2. Ejecutar la consecuencia correspondiente dentro de la misma transacción.
     if ($resultado === 'falle') {
+        $paso = 'registrar caída';
         $info = $caidaRepo->registrarCaida($usuarioId, $fechaHoy);
     } else {
+        $paso = 'registrar supervivencia';
         $nuevosDias = $caidaRepo->registrarSupervivencia($usuarioId);
         $info = ['dias' => $nuevosDias, 'rango' => obtenerRango($nuevosDias)];
     }
 
+    $paso = 'confirmar transacción';
     $pdo->commit();
 
     jsonResponse([
@@ -69,7 +75,7 @@ try {
         $pdo->rollBack();
     }
     // Puede ocurrir por la constraint UNIQUE en caso de doble envío simultáneo
-    error_log('Error al registrar reporte: ' . $e->getMessage());
+    error_log("Error al registrar reporte en {$paso}: " . $e->getMessage());
     jsonError('No se pudo registrar el reporte. Intenta de nuevo.', 409);
 } catch (Throwable $e) {
     if ($pdo->inTransaction()) {
