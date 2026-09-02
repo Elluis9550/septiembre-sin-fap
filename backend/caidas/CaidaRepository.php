@@ -86,6 +86,7 @@ class CaidaRepository
             $this->pdo->beginTransaction();
         }
 
+        $paso = 'seleccionar usuario';
         try {
             $stmt = $this->pdo->prepare('SELECT dias FROM usuarios WHERE id = :id FOR UPDATE');
             $stmt->execute(['id' => $usuarioId]);
@@ -97,6 +98,7 @@ class CaidaRepository
 
             $nuevosDias = (int) $usuario['dias'] + 1;
 
+            $paso = 'actualizar días';
             $stmt = $this->pdo->prepare('UPDATE usuarios SET dias = :dias WHERE id = :id');
             $stmt->execute(['dias' => $nuevosDias, 'id' => $usuarioId]);
 
@@ -108,7 +110,7 @@ class CaidaRepository
             if ($inicioTransaccion && $this->pdo->inTransaction()) {
                 $this->pdo->rollBack();
             }
-            throw $e;
+            throw new RuntimeException("Error al {$paso}: {$e->getMessage()}", 0, $e);
         }
     }
 
